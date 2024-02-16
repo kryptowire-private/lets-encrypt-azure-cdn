@@ -75,7 +75,7 @@ namespace LetsEncryptAzureCdn
                         certifcate.CdnEndpointName, certifcate.CdnCustomDomainName, certificateName, certificateVerison, certifcate.KeyVaultName);
                     log.LogInformation("HTTPS enabling started");
                 } catch (Exception ex) {
-                    log.LogError(ex);
+                    log.LogError(ex.Message);
                     throw;
                 }
             }
