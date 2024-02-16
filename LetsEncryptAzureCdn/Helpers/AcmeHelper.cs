@@ -73,10 +73,13 @@ namespace LetsEncryptAzureCdn.Helpers
             }
         }
 
-        public async Task<byte[]> GetPfxCertificateAsync(string password, string certificateCountryName, string certificateState, string certificateLocality,
+        public async Task<byte[]> GetPfxCertificateAsync(ILogger log, string password, string certificateCountryName, string certificateState, string certificateLocality,
             string certificateOrganization, string certificateOrganizationUnit, string domainName, string friendlyName)
         {
+            log.LogInformation("generating private key");
             var privateKey = KeyFactory.NewKey(KeyAlgorithm.RS256);
+
+            log.LogInformation("generating order context");
             var cert = await orderContext.Generate(new CsrInfo
             {
                 CountryName = certificateCountryName,
@@ -86,7 +89,11 @@ namespace LetsEncryptAzureCdn.Helpers
                 OrganizationUnit = certificateOrganizationUnit,
                 CommonName = domainName,
             }, privateKey);
+            
+            log.LogInformation("exporting pfx");
             var pfxBuilder = cert.ToPfx(privateKey);
+            
+            log.LogInformation("writing bytes");
             return pfxBuilder.Build(friendlyName, password);
         }
     }
