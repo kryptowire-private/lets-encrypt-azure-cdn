@@ -110,4 +110,5 @@ This project makes use of an Azure functions app that will add the necessary DNS
 11.	Either wait till 23:17 hours UTC or manually trigger the function by POSTing to https://<<URL for function app created in step 1>>/admin/functions/ApplyOrRenewCertificate
 12.	Wait for the certification propagation to complete 
 13.	Verify that your website is now being served with a new certificate
+14.	Profit.
 
