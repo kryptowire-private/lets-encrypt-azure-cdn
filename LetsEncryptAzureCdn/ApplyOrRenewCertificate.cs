@@ -45,7 +45,7 @@ namespace LetsEncryptAzureCdn
                     string keyVaultCertificateName = domainName.Replace(".", "");
                     log.LogInformation($"Getting expiry for {keyVaultCertificateName} in Key Vault certifictes");
                     var certificateExpiry = await certificateHelper.GetCertificateExpiryAsync(keyVaultCertificateName);
-                    if (certificateExpiry.HasValue && certificateExpiry.Value.Subtract(DateTime.UtcNow).TotalDays > 7)
+                    if (certificateExpiry.HasValue && certificateExpiry.Value.Subtract(DateTime.UtcNow).TotalDays > 30)
                     {
                         log.LogInformation("No certificates to renew.");
                         continue;
