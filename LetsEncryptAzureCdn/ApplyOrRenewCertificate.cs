@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LetsEncryptAzureCdn.Helpers;
 using LetsEncryptAzureCdn.Models;
-using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker;
 
 namespace LetsEncryptAzureCdn
 {
     public static class ApplyOrRenewCertificate
     {
-        [FunctionName("ApplyOrRenewCertificate")]
+        [Function("ApplyOrRenewCertificate")]
         public static async Task Run([TimerTrigger("0 17 23 * * *")] TimerInfo myTimer, ILogger log, ExecutionContext executionContext)
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
             string subscriptionId = Environment.GetEnvironmentVariable("SubscriptionId");
+            var azure_root = Environment.GetEnvironmentVariable("HOME") + @"\site\wwwroot"; 
             var config = new ConfigurationBuilder()
-                                .SetBasePath(executionContext.FunctionAppDirectory)
+                                .SetBasePath(azure_root)
                                 .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
                                 .AddEnvironmentVariables()
                                 .Build();
